@@ -1,0 +1,164 @@
+# Learning workflow: private GitHub repo -> GHCR -> optional local kind deployment.
+# Local deployment is OFF until repository variable ENABLE_LOCAL_CD is set to true
+# and a matching self-hosted runner is online in the same Linux environment as kind.
+name: CI and CD - Task Manager
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: CI - Build and smoke-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out project
+        uses: actions/checkout@v4
+
+      - name: Start application with Docker Compose
+        run: docker compose up --build -d
+
+      - name: Test frontend and backend through Nginx
+        shell: bash
+        run: |
+          ready=false
+          for attempt in $(seq 1 40); do
+            if curl --fail --silent --show-error http://127.0.0.1:8080/api/health; then
+              ready=true
+              break
+            fi
+            sleep 3
+          done
+          if [ "$ready" != true ]; then
+            echo 'Health endpoint did not become available.' >&2
+            docker compose ps
+            docker compose logs --tail=80
+            exit 1
+          fi
+          curl --fail --silent --show-error http://127.0.0.1:8080/api/tasks > /dev/null
+          curl --fail --silent --show-error http://127.0.0.1:8080/ > /dev/null
+          echo 'Smoke tests passed.'
+
+      - name: Show logs if CI failed
+        if: failure()
+        run: docker compose logs --tail=100
+
+      - name: Clean up test containers
+        if: always()
+        run: docker compose down --remove-orphans
+
+  publish:
+    name: CD part 1 - Publish versioned images
+    needs: verify
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      api_image: ${{ steps.names.outputs.api_image }}
+      frontend_image: ${{ steps.names.outputs.frontend_image }}
+    steps:
+      - name: Check out project
+        uses: actions/checkout@v4
+
+      - name: Compute image names using the commit SHA
+        id: names
+        shell: bash
+        run: |
+          OWNER="${GITHUB_REPOSITORY_OWNER,,}"
+          echo "api_image=ghcr.io/${OWNER}/interview-api:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+          echo "frontend_image=ghcr.io/${OWNER}/interview-frontend:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+          echo "api_repo=ghcr.io/${OWNER}/interview-api" >> "$GITHUB_OUTPUT"
+          echo "frontend_repo=ghcr.io/${OWNER}/interview-frontend" >> "$GITHUB_OUTPUT"
+
+      - name: Enable Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log into GHCR with automatically scoped GitHub token
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push .NET API
+        uses: docker/build-push-action@v6
+        with:
+          context: ./api
+          push: true
+          tags: |
+            ${{ steps.names.outputs.api_image }}
+            ${{ steps.names.outputs.api_repo }}:main
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+
+      - name: Build and push Angular frontend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: true
+          tags: |
+            ${{ steps.names.outputs.frontend_image }}
+            ${{ steps.names.outputs.frontend_repo }}:main
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+
+  deploy:
+    name: CD part 2 - Deploy into local kind
+    needs: publish
+    if: github.ref == 'refs/heads/main' && vars.ENABLE_LOCAL_CD == 'true'
+    runs-on: [self-hosted, linux, x64, deploy-kind]
+    concurrency:
+      group: interview-lab-kind-deploy
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      packages: read
+    env:
+      API_IMAGE: ${{ needs.publish.outputs.api_image }}
+      FRONTEND_IMAGE: ${{ needs.publish.outputs.frontend_image }}
+    steps:
+      - name: Check access to the intended local cluster
+        run: |
+          kubectl --context kind-interview-lab get nodes
+          kubectl --context kind-interview-lab get deployment api frontend
+
+      - name: Authenticate to private GHCR packages
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull versioned images into local Docker
+        run: |
+          docker pull "$API_IMAGE"
+          docker pull "$FRONTEND_IMAGE"
+
+      - name: Load images into kind's node image store
+        run: |
+          kind load docker-image "$API_IMAGE" "$FRONTEND_IMAGE" --name interview-lab
+
+      - name: Update both Kubernetes Deployments
+        run: |
+          kubectl --context kind-interview-lab set image deployment/api api="$API_IMAGE"
+          kubectl --context kind-interview-lab set image deployment/frontend frontend="$FRONTEND_IMAGE"
+
+      - name: Wait for successful rollouts
+        run: |
+          kubectl --context kind-interview-lab rollout status deployment/api --timeout=180s
+          kubectl --context kind-interview-lab rollout status deployment/frontend --timeout=180s
+          kubectl --context kind-interview-lab get pods -o wide
+
+      - name: Print deployment diagnostics on failure
+        if: failure()
+        run: |
+          kubectl --context kind-interview-lab get pods -o wide || true
+          kubectl --context kind-interview-lab describe deployment api || true
+          kubectl --context kind-interview-lab describe deployment frontend || true

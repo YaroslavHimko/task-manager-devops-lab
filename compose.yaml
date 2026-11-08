@@ -1,0 +1,15 @@
+services:
+  api:
+    build: ./api
+    image: interview-api:v1
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+    # No host port is required; nginx reaches the API over the Compose network.
+
+  frontend:
+    build: ./frontend
+    image: interview-frontend:v1
+    depends_on:
+      - api
+    ports:
+      - "8080:80"

@@ -1,0 +1,48 @@
+<main class="shell">
+  <div class="eyebrow">FULL-STACK DEPLOYMENT LAB</div>
+  <header>
+    <h1>Deploy your first app.</h1>
+    <p>Angular frontend · ASP.NET Core API · Docker · Kubernetes</p>
+  </header>
+
+  <section class="card">
+    <div class="card-head">
+      <div>
+        <h2>Tasks</h2>
+        <p>Try adding, completing, and deleting tasks.</p>
+      </div>
+      <button class="refresh" type="button" (click)="refresh()">Refresh</button>
+    </div>
+
+    <form (ngSubmit)="addTask()" class="add-form">
+      <input [(ngModel)]="draft" name="taskTitle" placeholder="e.g. Check Kubernetes logs" aria-label="New task" />
+      <button type="submit">Add task</button>
+    </form>
+
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+    @if (loading()) {
+      <p class="status">Loading from ASP.NET Core API…</p>
+    } @else {
+      <ul class="task-list">
+        @for (task of tasks(); track task.id) {
+          <li [class.done]="task.done">
+            <label>
+              <input type="checkbox" [checked]="task.done" (change)="toggleTask(task)" />
+              <span>{{ task.title }}</span>
+            </label>
+            <button type="button" class="delete" (click)="deleteTask(task.id)" [attr.aria-label]="'Delete ' + task.title">Delete</button>
+          </li>
+        } @empty {
+          <li class="empty">No tasks yet. Create your first one above.</li>
+        }
+      </ul>
+    }
+  </section>
+
+  <footer>
+    <span><i></i> API requests go through <code>/api</code></span>
+    <span>Learning demo — data resets when API restarts</span>
+  </footer>
+</main>

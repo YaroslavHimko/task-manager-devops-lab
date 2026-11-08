@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="An illustrated, practical .NET + Angular + Linux + Docker + Kubernetes deployment guide for Windows Server and React developers.">
+<title>Ship It — .NET + Angular → Docker → Kubernetes</title>
+<style>
+:root{--ink:#1b293d;--muted:#5e7087;--paper:#f5f7f9;--white:#fff;--line:#dfe6eb;--blue:#4778b9;--blue-soft:#eaf2ff;--green:#277e73;--green-soft:#e5f5ef;--orange:#ac7338;--orange-soft:#fff2e0;--dark:#17283d;--radius:16px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:30px}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif;line-height:1.58;font-size:15px}a{color:#25649c;text-decoration:none}a:hover{text-decoration:underline}button{font:inherit}::selection{background:#d7eaff}
+.layout{display:grid;grid-template-columns:242px minmax(0,1fr);min-height:100vh;max-width:1600px;margin:auto}.aside{background:#f9fafc;border-right:1px solid var(--line);padding:26px 16px;position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;align-items:center;gap:10px;padding:0 12px 18px;border-bottom:1px solid var(--line)}.logo{font-weight:850;font-size:16px;letter-spacing:-.03em}.logo-mark{width:33px;height:33px;border-radius:10px;background:var(--dark);color:#fff;display:grid;place-items:center;font-weight:800}.sublabel{color:var(--muted);font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;margin:22px 12px 9px}.aside a.nav{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:2px 0;color:#3d5168;font-size:13px;border-radius:9px}.aside a.nav:hover,.aside a.nav.active{background:#e8eff7;color:#153b68;text-decoration:none}.nav-num{font-size:10px;color:#66788b;width:19px;flex:none;font-weight:700}.sidebar-note{background:#eef3f7;border-radius:12px;padding:13px;margin:23px 4px 0;color:#53677c;font-size:12px}.sidebar-note strong{display:block;color:#1f3b52;margin-bottom:5px}.main{min-width:0;padding:0 46px 80px;max-width:1190px;width:100%;margin:auto}.topline{font-size:12px;font-weight:700;letter-spacing:.1em;color:#57718b;text-transform:uppercase;margin:43px 0 14px}.hero{background:linear-gradient(128deg,#1b2a42,#244865 60%,#2b6870);border-radius:23px;color:#fff;padding:46px 48px;margin-bottom:31px;position:relative;overflow:hidden}.hero:after{content:'';position:absolute;width:300px;height:300px;right:-145px;top:-133px;border:1px solid #ffffff25;border-radius:50%;box-shadow:0 0 0 50px #ffffff05,0 0 0 100px #ffffff06}.hero h1{max-width:730px;font-size:clamp(32px,4vw,52px);line-height:1.1;letter-spacing:-.05em;margin:0 0 17px}.hero p{max-width:730px;font-size:17px;color:#e2edf5;margin:0 0 23px}.pill-row{display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1}.pill{padding:7px 11px;border:1px solid #ffffff40;background:#ffffff12;border-radius:100px;font-size:12px;font-weight:650}.hero-link{display:inline-flex;gap:7px;align-items:center;color:#fff!important;margin-top:23px;font-weight:720;border-bottom:1px solid #ffffff66;padding-bottom:3px}.section{margin-top:49px;scroll-margin-top:26px}.eyebrow{font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:#50708b;margin-bottom:8px}.section h2{font-size:clamp(23px,3vw,32px);letter-spacing:-.035em;line-height:1.2;margin:0 0 10px}.lede{max-width:880px;color:var(--muted);margin:0 0 22px}.card{border:1px solid var(--line);background:var(--white);border-radius:var(--radius);padding:22px;margin:15px 0;box-shadow:0 4px 14px #17283d05}.card h3,.panel h3{font-size:17px;letter-spacing:-.015em;margin:0 0 10px}.card p{margin:10px 0}.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.mini{padding:18px;border-radius:13px;background:#fff;border:1px solid var(--line)}.mini h3{font-size:15px;margin:7px 0}.mini p{color:var(--muted);font-size:13px;margin:5px 0}.mini-badge{display:inline-block;font-size:11px;border-radius:50px;padding:3px 8px;background:var(--blue-soft);color:#345f8d;font-weight:750}.mini-badge.green{background:var(--green-soft);color:#216d62}.mini-badge.orange{background:var(--orange-soft);color:#8c5d31}.diagram{background:#fff;border:1px solid var(--line);border-radius:19px;padding:23px;margin:18px 0}.diagram h3{font-size:17px;margin:0 0 15px}.legend{display:flex;flex-wrap:wrap;gap:13px;margin:13px 0 0;font-size:12px;color:var(--muted)}.legend span{display:flex;gap:6px;align-items:center}.dot{height:9px;width:9px;border-radius:50%;display:inline-block}.dot.blue{background:var(--blue)}.dot.green{background:var(--green)}.dot.orange{background:var(--orange)}svg{max-width:100%;height:auto;display:block}svg text{font-family:Inter,system-ui,Segoe UI,sans-serif}.flow-node{fill:#f2f6fc;stroke:#aabfd7;stroke-width:1.5}.flow-node-build{fill:#fff5e8;stroke:#d9ae78;stroke-width:1.5}.flow-node-run{fill:#eaf7f0;stroke:#87bca3;stroke-width:1.5}.flow-text{font-weight:760;font-size:14px;fill:#243b56}.flow-sub{font-size:10px;fill:#576c80}.flow-arrow{stroke:#7d8ea5;stroke-width:2;fill:none;marker-end:url(#arrow)}.phase-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--line);background:#fff;border-radius:15px;overflow:hidden}.phase{border-right:1px solid var(--line);padding:14px 11px;font-size:12px;color:#486179}.phase:last-child{border:0}.phase b{display:block;color:#203a55;font-size:13px}.phase small{display:block;margin-top:4px;line-height:1.3;color:#738194}.cmd{border:1px solid #2c3f54;border-radius:12px;overflow:hidden;margin:12px 0;background:#162334}.cmdtop{display:flex;align-items:center;justify-content:space-between;color:#bed1de;background:#213247;font-size:11px;font-weight:720;letter-spacing:.03em;padding:8px 12px}.copy{cursor:pointer;background:#364e65;border:1px solid #56708a;color:#fff;border-radius:6px;padding:4px 8px;font-size:11px}.copy:hover{background:#48708e}.cmd pre{margin:0;overflow-x:auto;padding:15px;color:#eaf3f9;font-size:12.5px;line-height:1.65;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre}.command-note{color:var(--muted);font-size:12px;margin:8px 0}.callout{border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:14px 17px;background:var(--blue-soft);font-size:13px;margin:15px 0}.callout.warn{border-color:#c58a45;background:var(--orange-soft)}.callout.good{border-color:var(--green);background:var(--green-soft)}.callout strong{color:#213b55}.stage{margin:18px 0;border:1px solid var(--line);border-radius:16px;background:#fff;padding:19px 21px}.stagehead{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.stagehead h3{margin:0 0 3px;font-size:19px}.stagehead p{margin:0;color:var(--muted);font-size:13px}.stepnum{flex:none;width:35px;height:35px;display:grid;place-items:center;border-radius:11px;background:#e8f0fa;color:#265b8e;font-weight:850}.stage-main{margin-top:16px}.success{display:flex;gap:9px;align-items:flex-start;margin-top:12px;padding:11px 13px;border-radius:9px;background:#edf7f2;color:#256658;font-size:13px}.success strong{color:#1d584b}.listcheck{list-style:none;padding:0;display:grid;gap:9px;margin:12px 0}.listcheck li{display:flex;gap:9px;align-items:flex-start}.listcheck li:before{content:'✓';display:grid;place-items:center;color:#237569;background:#e0f3ea;border-radius:100%;width:19px;height:19px;font-size:12px;flex:none;margin-top:2px}.route-switch{display:inline-flex;gap:5px;padding:5px;background:#e8eef5;border-radius:11px;margin-bottom:15px}.route-switch button{border:0;background:transparent;border-radius:7px;padding:9px 13px;color:#4f667b;font-size:13px;cursor:pointer;font-weight:700}.route-switch button.active{background:#fff;color:#1d4c77;box-shadow:0 2px 8px #17283d18}.route-panel[hidden]{display:none}.timeline{border-left:2px solid #b8c8d6;margin:16px 0 16px 11px;padding-left:21px}.timeline>div{margin:0 0 19px;position:relative}.timeline>div:before{content:'';width:12px;height:12px;border-radius:50%;background:var(--blue);position:absolute;left:-28px;top:5px;border:2px solid #fff;box-shadow:0 0 0 1px #b8c8d6}.timeline b{display:block}.timeline p{font-size:13px;color:var(--muted);margin:3px 0}.small-table{border-collapse:collapse;width:100%;font-size:13px}.small-table th{text-align:left;background:#f0f4f8;color:#405a73;font-weight:770}.small-table td,.small-table th{border:1px solid var(--line);padding:11px 12px;vertical-align:top}.small-table tr:nth-child(even) td{background:#fbfcfd}.hint{color:var(--muted);font-size:12px}.trouble{display:grid;grid-template-columns:1fr 1.4fr;gap:11px;align-items:stretch}.symptom{padding:13px;background:#fff3e5;border-radius:11px;font-size:13px;font-weight:760;color:#885822}.diagnosis{padding:13px;border:1px solid var(--line);background:#fff;border-radius:11px;font-size:13px}.diagnosis code{background:#edf3f8;border-radius:4px;padding:2px 4px}.tasks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.task{background:white;border-radius:12px;border:1px solid var(--line);padding:15px}.task label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}.task input{margin-top:5px;accent-color:#278272}.task b{display:block;font-size:14px}.task p{color:var(--muted);font-size:12px;margin:4px 0 0}.progress-shell{height:7px;border-radius:15px;background:#d9e5eb;margin-top:12px;overflow:hidden}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#4177ab,#35a17f);transition:width .2s}.foot{border-top:1px solid var(--line);margin-top:56px;padding-top:18px;font-size:13px;color:var(--muted)}.print-only{display:none}kbd{background:#eaf0f5;border:1px solid #d8e0e8;border-radius:4px;padding:1px 5px;font-size:12px}code:not(pre code){font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.94em;background:#edf2f6;padding:1px 4px;border-radius:4px}details{border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin:9px 0;background:#fff}summary{cursor:pointer;font-weight:750;color:#2d4c69}details p{font-size:13px;color:#596d80}details[open]{border-color:#bfd0de}.toplinks{display:flex;flex-wrap:wrap;gap:10px;margin-top:19px}.toplinks a{font-size:12px;padding:8px 12px;border:1px solid #becbd8;border-radius:7px;color:#315a80;background:#fff}.toplinks a:hover{background:#eef5fb;text-decoration:none}.titleline{display:flex;align-items:center;gap:10px}.titleline .kicker{background:#dcecf9;border-radius:7px;padding:5px 9px;font-size:11px;font-weight:800;color:#3c6285} .gap-sm{height:10px}
+@media(max-width:1150px){.layout{grid-template-columns:200px minmax(0,1fr)}.main{padding:0 26px 60px}.aside a.nav{font-size:12px}.hero{padding:36px}}
+@media(max-width:800px){.layout{display:block}.aside{position:static;height:auto;display:none}.main{padding:0 17px 50px}.hero{padding:29px 24px;border-radius:18px}.topline{margin-top:22px}.hero h1{font-size:33px}.hero p{font-size:15px}.three,.two,.tasks{grid-template-columns:1fr}.phase-strip{grid-template-columns:repeat(2,1fr)}.phase{border-bottom:1px solid var(--line)}.trouble{grid-template-columns:1fr}.card,.diagram{padding:16px}.section{margin-top:38px}}
+@media print{body{background:#fff;font-size:12px}.aside,.copy,.route-switch,.tasks input{display:none!important}.main{padding:0;max-width:none}.hero{color:#000;background:white;border:1px solid #ddd;page-break-after:avoid}.hero p{color:#333}.pill{color:#333;border-color:#bbb}.section{break-inside:avoid}.card,.stage,.diagram{break-inside:avoid;box-shadow:none}.cmd{background:#fff!important;border:1px solid #ccc}.cmdtop{color:#555;background:#eee}.cmd pre{color:#000;background:#fff;font-size:10px;white-space:pre-wrap}.route-panel[hidden]{display:block!important}.print-only{display:block}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="aside" aria-label="Guide chapters">
+  <div class="brand"><div class="logo-mark">&gt;_</div><div><div class="logo">SHIP IT</div><div style="color:#708094;font-size:11px">Deployment field guide</div></div></div>
+  <div class="sublabel">Understand</div>
+  <a class="nav" href="#overview"><span class="nav-num">01</span> Pipeline overview</a>
+  <a class="nav" href="#traffic"><span class="nav-num">02</span> Browser request journey</a>
+  <a class="nav" href="#workspace"><span class="nav-num">03</span> Where things run</a>
+  <div class="sublabel">Build and ship</div>
+  <a class="nav" href="#prepare"><span class="nav-num">04</span> Prepare Linux & Docker</a>
+  <a class="nav" href="#code"><span class="nav-num">05</span> Read application code</a>
+  <a class="nav" href="#docker"><span class="nav-num">06</span> Build & run with Docker</a>
+  <a class="nav" href="#kube"><span class="nav-num">07</span> Deploy to Kubernetes</a>
+  <a class="nav" href="#release"><span class="nav-num">08</span> Release and rollback</a>
+  <a class="nav" href="#cicd"><span class="nav-num">09</span> Real CI/CD pipeline</a>
+  <div class="sublabel">Become job-ready</div>
+  <a class="nav" href="#debug"><span class="nav-num">10</span> Troubleshooting playbook</a>
+  <a class="nav" href="#interview"><span class="nav-num">11</span> Interview practice</a>
+  <div class="sidebar-note"><strong>Who this is for</strong>C# and React developer familiar with Windows Server, new to Linux containers and Kubernetes.<div class="progress-shell"><div class="progress-fill" id="progress"></div></div><span id="progress-text">0 of 8 practice goals complete</span></div>
+</aside>
+<main class="main">
+<div class="topline">Illustrated lab · .NET 10 + Angular 22 · Docker + Linux + Kubernetes</div>
+<header class="hero">
+  <h1>From Visual Studio to a running Kubernetes app.</h1>
+  <p>Learn the complete journey: write code, build two Linux containers, run with Docker Compose, deploy them to Kubernetes, ship a new release, and debug failures.</p>
+  <div class="pill-row"><span class="pill">Beginner friendly</span><span class="pill">Real project commands</span><span class="pill">Local lab + CI/CD</span><span class="pill">Interview focus</span></div>
+  <a class="hero-link" href="#overview">Explore the pipeline ↓</a>
+</header>
+<section id="overview" class="section">
+  <div class="eyebrow">01 / Big picture</div><h2>The delivery pipeline</h2>
+  <p class="lede">Think of a pipeline as a sequence of transformations. <b>Code</b> becomes <b>compiled files</b>, then <b>Docker images</b>, then <b>containers</b>, which Kubernetes manages as <b>Pods</b>. A CI/CD platform can automate some or all of these steps.</p>
+  <div class="diagram">
+    <h3>The complete path from code to users</h3>
+    <svg role="img" aria-label="Source code flows into builds and Docker images, then into a container registry, Kubernetes Deployment, Pods and a browser-accessible application." viewBox="0 0 1040 260" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6Z" fill="#7d8ea5"/></marker></defs>
+      <rect class="flow-node" x="14" y="61" width="145" height="99" rx="13"/><text x="86" y="90" text-anchor="middle" class="flow-text">SOURCE</text><text x="86" y="111" text-anchor="middle" class="flow-sub">C# / Angular</text><text x="86" y="127" text-anchor="middle" class="flow-sub">Dockerfiles</text>
+      <path class="flow-arrow" d="M159 110 L184 110"/>
+      <rect class="flow-node" x="184" y="61" width="147" height="99" rx="13"/><text x="258" y="89" text-anchor="middle" class="flow-text">BUILD</text><text x="258" y="109" text-anchor="middle" class="flow-sub">dotnet publish</text><text x="258" y="126" text-anchor="middle" class="flow-sub">ng build</text>
+      <path class="flow-arrow" d="M331 110 L357 110"/>
+      <rect class="flow-node-build" x="357" y="61" width="142" height="99" rx="13"/><text x="428" y="88" text-anchor="middle" class="flow-text">IMAGES</text><text x="428" y="107" text-anchor="middle" class="flow-sub">interview-api:v1</text><text x="428" y="126" text-anchor="middle" class="flow-sub">interview-frontend:v1</text>
+      <path class="flow-arrow" d="M499 110 L528 110"/>
+      <rect class="flow-node-build" x="528" y="61" width="148" height="99" rx="13"/><text x="602" y="89" text-anchor="middle" class="flow-text">REGISTRY*</text><text x="602" y="110" text-anchor="middle" class="flow-sub">GHCR / Docker Hub</text><text x="602" y="127" text-anchor="middle" class="flow-sub">Stores image tags</text>
+      <path class="flow-arrow" d="M676 110 L706 110"/>
+      <rect class="flow-node-run" x="706" y="61" width="149" height="99" rx="13"/><text x="780" y="90" text-anchor="middle" class="flow-text">KUBERNETES</text><text x="780" y="110" text-anchor="middle" class="flow-sub">Deployment / Pods</text><text x="780" y="127" text-anchor="middle" class="flow-sub">Services / probes</text>
+      <path class="flow-arrow" d="M855 110 L885 110"/>
+      <rect class="flow-node-run" x="885" y="61" width="139" height="99" rx="13"/><text x="954" y="90" text-anchor="middle" class="flow-text">USERS</text><text x="954" y="110" text-anchor="middle" class="flow-sub">Browser loads UI</text><text x="954" y="127" text-anchor="middle" class="flow-sub">and calls the API</text>
+      <path d="M427 162 V205 H780 V162" stroke="#91a5ba" stroke-width="2" stroke-dasharray="5 6" fill="none"/>
+      <rect x="491" y="188" width="232" height="34" rx="8" fill="#edf3f9"/><text x="607" y="209" text-anchor="middle" fill="#415c76" font-weight="700" font-size="11">LOCAL kind: load images directly</text>
+      <text x="13" y="244" fill="#6b7d8f" font-size="11">* Registry is used in a team/production pipeline. Your first local kind exercise skips it.</text>
+    </svg>
+    <div class="legend"><span><i class="dot blue"></i> Developer/build</span><span><i class="dot orange"></i> Package/publish</span><span><i class="dot green"></i> Run and expose</span></div>
+  </div>
+  <div class="three">
+    <div class="mini"><span class="mini-badge">BUILD</span><h3>Docker image</h3><p>A reusable, versioned package: compiled application, runtime dependencies, and startup command. Not a running process.</p></div>
+    <div class="mini"><span class="mini-badge orange">RUN</span><h3>Container</h3><p>A running instance of an image. It has a process, filesystem view, environment, and network.</p></div>
+    <div class="mini"><span class="mini-badge green">ORCHESTRATE</span><h3>Kubernetes Pod</h3><p>The unit Kubernetes schedules. In this lab, each Pod holds one running application container.</p></div>
+  </div>
+</section>
+<section id="traffic" class="section">
+  <div class="eyebrow">02 / Runtime path</div><h2>What happens when a user clicks “Add task”?</h2><p class="lede">This is a different pipeline: <b>HTTP traffic at runtime</b>. It is the best diagram to understand before a technical interview.</p>
+  <div class="diagram"><h3>Browser → Nginx → .NET API → response</h3>
+  <svg role="img" aria-label="Browser sends a request to frontend Service and Nginx Pod. Nginx forwards API traffic to api Service and ASP.NET Core Kestrel Pod. JSON response goes back." viewBox="0 0 1000 315" xmlns="http://www.w3.org/2000/svg">
+    <rect x="11" y="17" width="175" height="258" rx="12" fill="#eef4fb" stroke="#aabfd7"/><text x="98" y="39" text-anchor="middle" fill="#4c6682" font-weight="800" font-size="12">YOUR LAPTOP</text>
+    <rect x="24" y="65" width="149" height="90" rx="12" fill="white" stroke="#8caaca"/><text x="98" y="93" text-anchor="middle" class="flow-text">Browser</text><text x="98" y="112" text-anchor="middle" class="flow-sub">Angular JavaScript</text><text x="98" y="129" text-anchor="middle" class="flow-sub">POST /api/tasks</text>
+    <rect x="202" y="17" width="786" height="258" rx="12" fill="#f8fafc" stroke="#bdccd9"/><text x="593" y="39" text-anchor="middle" fill="#4c6682" font-weight="800" font-size="12">KUBERNETES CLUSTER (kind)</text>
+    <rect x="220" y="65" width="150" height="90" rx="11" fill="#eaf2ff" stroke="#a4beda"/><text x="295" y="91" text-anchor="middle" class="flow-text">frontend</text><text x="295" y="109" text-anchor="middle" class="flow-sub">Service :80</text><text x="295" y="129" text-anchor="middle" class="flow-sub">Stable address</text>
+    <rect x="389" y="65" width="177" height="90" rx="11" fill="#e6f2fa" stroke="#97bbd5"/><text x="477" y="88" text-anchor="middle" class="flow-text">Frontend Pod</text><text x="477" y="108" text-anchor="middle" class="flow-sub">Nginx serves Angular</text><text x="477" y="127" text-anchor="middle" class="flow-sub">Proxies /api requests</text>
+    <rect x="585" y="65" width="150" height="90" rx="11" fill="#e8f5ee" stroke="#98bfa7"/><text x="660" y="91" text-anchor="middle" class="flow-text">api</text><text x="660" y="109" text-anchor="middle" class="flow-sub">Service :8080</text><text x="660" y="129" text-anchor="middle" class="flow-sub">DNS: api</text>
+    <rect x="754" y="65" width="214" height="90" rx="11" fill="#e8f5ee" stroke="#98bfa7"/><text x="861" y="88" text-anchor="middle" class="flow-text">API Pod</text><text x="861" y="108" text-anchor="middle" class="flow-sub">ASP.NET Core / Kestrel</text><text x="861" y="127" text-anchor="middle" class="flow-sub">Handles POST /api/tasks</text>
+    <g stroke="#718ba5" fill="none" stroke-width="2" marker-end="url(#arrow)"><path d="M173 104 H220"/><path d="M370 104 H389"/><path d="M566 104 H585"/><path d="M735 104 H754"/></g>
+    <path d="M862 157 V212 H98 V158" stroke="#258875" stroke-width="2.5" stroke-dasharray="7 5" fill="none"/><path d="M92 168 L98 158 L104 168" fill="none" stroke="#258875" stroke-width="2"/>
+    <rect x="355" y="197" width="290" height="33" rx="8" fill="#dcf2e7"/><text x="500" y="217" text-anchor="middle" fill="#226953" font-size="12" font-weight="750">Response: 201 Created + task JSON</text>
+    <text x="98" y="177" text-anchor="middle" class="flow-sub">via kubectl port-forward</text>
+    <text x="500" y="295" text-anchor="middle" fill="#778797" font-size="11">The browser does NOT resolve the internal hostname “api”. Nginx resolves it inside Kubernetes.</text>
+  </svg>
+  <div class="callout good"><strong>Critical interview insight:</strong> <code>http://api:8080</code> works <em>inside</em> the Compose/Kubernetes network, not in the user's browser. The browser calls <code>/api/tasks</code> on the same origin as the frontend. Nginx is the reverse proxy.</div></div>
+  <div class="two"><div class="mini"><h3>Frontend request</h3><div class="cmd"><div class="cmdtop"><span>Angular / HttpClient</span><button class="copy" data-copy>Copy</button></div><pre><code>this.http.post('/api/tasks', {
+  title: 'Learn Kubernetes'
+});</code></pre></div></div><div class="mini"><h3>Backend endpoint</h3><div class="cmd"><div class="cmdtop"><span>.NET / Minimal API</span><button class="copy" data-copy>Copy</button></div><pre><code>app.MapPost("/api/tasks", input => {
+  // validate and create task
+  return Results.Created(...);
+});</code></pre></div></div></div>
+</section>
+<section id="workspace" class="section">
+  <div class="eyebrow">03 / Environments</div><h2>Where does each part actually run?</h2>
+  <p class="lede">You can complete the lab on a Windows 10/11 workstation. You use a Linux terminal, but you do not need to buy a Linux server.</p>
+  <div class="phase-strip"><div class="phase"><b>Windows</b><small>VS Code / browser / Docker Desktop</small></div><div class="phase"><b>WSL Ubuntu</b><small>Terminal, source files, Docker CLI</small></div><div class="phase"><b>Linux engine</b><small>Builds and runs Docker containers</small></div><div class="phase"><b>kind</b><small>Kubernetes nodes inside Docker</small></div><div class="phase"><b>Pods</b><small>Your API and Nginx frontend</small></div></div>
+  <table class="small-table" style="margin-top:17px"><thead><tr><th>Windows Server concept</th><th>What to recognize here</th></tr></thead><tbody><tr><td>IIS website</td><td>Nginx container serving compiled Angular assets</td></tr><tr><td>ASP.NET app pool</td><td>.NET app process running Kestrel inside an API container</td></tr><tr><td>Web deployment package</td><td>Docker image; reproducible and tagged</td></tr><tr><td>Load balancer / virtual IP</td><td>Kubernetes Service routes to matching Pods</td></tr><tr><td>Services.msc / Event Viewer</td><td><code>docker ps</code>, <code>docker logs</code>, <code>kubectl get pods</code>, <code>kubectl logs</code></td></tr></tbody></table>
+  <div class="callout warn"><strong>Windows Server note:</strong> Docker Desktop is not supported on Windows Server. This lab targets Windows 10/11 with WSL 2, or a standalone Linux VM. Production clusters normally run on dedicated Linux nodes or a managed Kubernetes service.</div>
+</section>
+<section id="prepare" class="section">
+  <div class="eyebrow">04 / Hands-on stage 1</div><h2>Prepare Windows, Ubuntu, and Docker</h2>
+  <div class="stage"><div class="stagehead"><div><h3>Install Ubuntu through WSL 2</h3><p>Use PowerShell as Administrator on your development PC.</p></div><div class="stepnum">1</div></div><div class="stage-main">
+    <div class="cmd"><div class="cmdtop"><span>WINDOWS · PowerShell</span><button class="copy" data-copy>Copy</button></div><pre><code>wsl --install -d Ubuntu</code></pre></div>
+    <p>Reboot if prompted. Open Ubuntu from Start and create your Linux username/password. Install <a href="https://www.docker.com/products/docker-desktop/" target="_blank" rel="noopener">Docker Desktop</a>, enable its WSL 2 backend and <em>Ubuntu WSL integration</em>.</p>
+    <div class="cmd"><div class="cmdtop"><span>UBUNTU · Linux terminal</span><button class="copy" data-copy>Copy</button></div><pre><code>whoami             # your Linux user
+pwd                # current folder
+ls -la             # directory listing
+mkdir -p ~/projects
+cd ~/projects
+docker version
+docker compose version
+docker run --rm hello-world</code></pre></div>
+    <div class="success">✓ <span><strong>Expected:</strong> Docker prints version information, then the hello-world container completes successfully.</span></div>
+  </div></div>
+  <div class="stage"><div class="stagehead"><div><h3>Extract the provided lab inside Ubuntu</h3><p>Work from the project root, containing <code>compose.yaml</code>.</p></div><div class="stepnum">2</div></div><div class="stage-main">
+    <div class="cmd"><div class="cmdtop"><span>UBUNTU · replace YOUR_WINDOWS_USERNAME</span><button class="copy" data-copy>Copy</button></div><pre><code>cd ~/projects
+cp /mnt/c/Users/YOUR_WINDOWS_USERNAME/Downloads/dotnet-angular-docker-kubernetes-lab.zip .
+sudo apt update &amp;&amp; sudo apt install -y unzip
+unzip dotnet-angular-docker-kubernetes-lab.zip
+cd dotnet-angular-docker-kubernetes-lab
+ls</code></pre></div>
+    <div class="callout">If you save this updated training ZIP instead, change the ZIP filename in both commands. A good practice is to keep source files in <code>~/projects</code> (Linux filesystem), then use VS Code's WSL extension and <code>code .</code>.</div>
+  </div></div>
+</section>
+<section id="code" class="section"><div class="eyebrow">05 / Hands-on stage 2</div><h2>Know what you're deploying</h2>
+ <p class="lede">The application has just two pieces. Angular is built into static JS/CSS/HTML assets; .NET runs a process that answers API calls.</p>
+ <div class="two"><div class="mini"><span class="mini-badge">BACKEND</span><h3><code>api/Program.cs</code></h3><p>Minimal API exposes <code>/api/tasks</code> and <code>/api/health</code>; task state is a small in-memory dictionary.</p><p><b>Runtime:</b> Kestrel on port 8080.</p></div><div class="mini"><span class="mini-badge green">FRONTEND</span><h3><code>frontend/src/app/...</code></h3><p>Angular component uses signals, templates, and <code>HttpClient</code> to call <code>/api/tasks</code>.</p><p><b>Runtime:</b> compiled static assets served by Nginx on port 80.</p></div></div>
+ <div class="card"><h3>Think of Angular in React terms</h3><table class="small-table"><thead><tr><th>React knowledge</th><th>Angular idea in this project</th></tr></thead><tbody><tr><td><code>useState</code></td><td><code>signal()</code> and <code>.set()/.update()</code></td></tr><tr><td>JSX and <code>items.map(...)</code></td><td>HTML template with <code>@for</code> and <code>@if</code></td></tr><tr><td><code>fetch()</code> / Axios</td><td>Injected <code>HttpClient</code></td></tr><tr><td><code>useEffect</code> on mount</td><td><code>ngOnInit()</code> lifecycle hook (rough analogy)</td></tr></tbody></table></div>
+</section>
+<section id="docker" class="section"><div class="eyebrow">06 / Hands-on stage 3</div><h2>Build Docker images and run both services</h2>
+ <p class="lede">One Dockerfile for the backend and another for the frontend. Both use <b>multi-stage builds</b>: large build tools are discarded before the smaller runtime image is created.</p>
+ <div class="diagram"><h3>Two separate image builds</h3>
+ <svg viewBox="0 0 990 260" role="img" aria-label=".NET SDK builds to ASP.NET runtime image; Node builds Angular to Nginx runtime image." xmlns="http://www.w3.org/2000/svg">
+  <rect x="18" y="18" width="954" height="102" rx="14" fill="#f5f9fe" stroke="#d1e0ef"/><rect x="18" y="139" width="954" height="102" rx="14" fill="#f4faf6" stroke="#d0e8d9"/>
+  <rect class="flow-node" x="34" y="42" width="195" height="55" rx="10"/><text x="132" y="64" text-anchor="middle" class="flow-text">.NET SDK 10</text><text x="132" y="82" text-anchor="middle" class="flow-sub">dotnet publish</text>
+  <path class="flow-arrow" d="M229 69 H300"/><rect class="flow-node-build" x="300" y="42" width="255" height="55" rx="10"/><text x="427" y="64" text-anchor="middle" class="flow-text">Compiled API</text><text x="427" y="82" text-anchor="middle" class="flow-sub">TodoApi.dll</text>
+  <path class="flow-arrow" d="M555 69 H627"/><rect class="flow-node-run" x="627" y="42" width="327" height="55" rx="10"/><text x="790" y="64" text-anchor="middle" class="flow-text">ASP.NET runtime image</text><text x="790" y="82" text-anchor="middle" class="flow-sub">.NET process / port 8080</text>
+  <rect class="flow-node" x="34" y="162" width="195" height="55" rx="10"/><text x="132" y="185" text-anchor="middle" class="flow-text">Node.js 24</text><text x="132" y="202" text-anchor="middle" class="flow-sub">npm install / ng build</text>
+  <path class="flow-arrow" d="M229 189 H300"/><rect class="flow-node-build" x="300" y="162" width="255" height="55" rx="10"/><text x="427" y="184" text-anchor="middle" class="flow-text">Compiled Angular</text><text x="427" y="201" text-anchor="middle" class="flow-sub">HTML / JS / CSS in dist/</text>
+  <path class="flow-arrow" d="M555 189 H627"/><rect class="flow-node-run" x="627" y="162" width="327" height="55" rx="10"/><text x="790" y="184" text-anchor="middle" class="flow-text">Nginx runtime image</text><text x="790" y="201" text-anchor="middle" class="flow-sub">Serves UI + reverse proxy / port 80</text>
+ </svg></div>
+ <div class="two"><div class="mini"><h3>Dockerfile vs Docker image</h3><p><b>Dockerfile:</b> recipe for building a package.</p><p><b>Image:</b> built package, e.g. <code>interview-api:v1</code>.</p><p><b>Container:</b> running instance of that image.</p></div><div class="mini"><h3>Build time vs runtime</h3><p><code>RUN dotnet publish</code> happens when building an image.</p><p><code>ENTRYPOINT ["dotnet", "TodoApi.dll"]</code> starts the process when a container runs.</p></div></div>
+ <div class="stage"><div class="stagehead"><div><h3>Start the application with Docker Compose</h3><p>Compose creates a network and starts two containers from two images.</p></div><div class="stepnum">3</div></div><div class="stage-main">
+ <div class="cmd"><div class="cmdtop"><span>UBUNTU · project root</span><button class="copy" data-copy>Copy</button></div><pre><code>docker compose up --build -d
+
+docker compose ps
+docker images
+curl -i http://localhost:8080/api/health
+curl http://localhost:8080/api/tasks</code></pre></div>
+ <div class="success">✓ <span><strong>Expected:</strong> API health returns JSON like <code>{"status":"healthy"}</code>. Browse to <b>http://localhost:8080</b>, add a task, and see it appear.</span></div>
+ <div class="callout"><strong>Why only one exposed port?</strong> Compose maps <code>localhost:8080 → frontend:80</code>. Nginx reaches <code>api:8080</code> on the internal Docker network. No need to publish the API container's port to your laptop.</div>
+ <div class="cmd"><div class="cmdtop"><span>UBUNTU · investigate and stop</span><button class="copy" data-copy>Copy</button></div><pre><code>docker compose logs --tail=40 api
+docker compose exec frontend sh
+# type 'exit' to leave the container
+
+docker compose down</code></pre></div>
+ </div></div>
+ <details><summary>See the key Compose configuration</summary><div class="cmd"><div class="cmdtop"><span>compose.yaml · included in the project</span><button class="copy" data-copy>Copy</button></div><pre><code>services:
+  api:
+    build: ./api
+    image: interview-api:v1
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+
+  frontend:
+    build: ./frontend
+    image: interview-frontend:v1
+    depends_on:
+      - api
+    ports:
+      - "8080:80"</code></pre></div><p>Note: <code>depends_on</code> controls startup order, not application readiness. Real production setups should have proper health checks and retry handling.</p></details>
+ <details><summary>See the Nginx reverse-proxy rule</summary><div class="cmd"><div class="cmdtop"><span>frontend/nginx.conf</span><button class="copy" data-copy>Copy</button></div><pre><code>location /api/ {
+    proxy_pass http://api:8080;
+}
+location / {
+    try_files $uri $uri/ /index.html;
+}</code></pre></div><p>This lets the browser use relative paths and avoids configuring CORS for two different origins in this lab.</p></details>
+</section>
+<section id="kube" class="section"><div class="eyebrow">07 / Hands-on stage 4</div><h2>Deploy the same images to Kubernetes</h2><p class="lede">Kubernetes isn't a replacement for your application or Docker images. It is a control system that creates Pods, monitors health, and keeps the number of replicas you request.</p>
+ <div class="diagram"><h3>What your Kubernetes YAML creates</h3>
+ <svg viewBox="0 0 960 284" role="img" aria-label="Two Deployments: frontend with two Pods, and api with one Pod; each is exposed via a ClusterIP Service." xmlns="http://www.w3.org/2000/svg">
+  <rect x="16" y="17" width="445" height="245" rx="15" fill="#edf4ff" stroke="#9ab7d6"/><rect x="495" y="17" width="449" height="245" rx="15" fill="#edf8f2" stroke="#98c6ad"/>
+  <text x="238" y="43" text-anchor="middle" font-weight="800" font-size="14" fill="#315c8a">frontend Deployment</text><text x="718" y="43" text-anchor="middle" font-weight="800" font-size="14" fill="#316a53">api Deployment</text>
+  <rect x="72" y="65" width="158" height="80" rx="11" fill="#fff" stroke="#93b5d6"/><rect x="247" y="65" width="158" height="80" rx="11" fill="#fff" stroke="#93b5d6"/><text x="151" y="93" text-anchor="middle" class="flow-text">Pod #1</text><text x="151" y="112" text-anchor="middle" class="flow-sub">Nginx :80</text><text x="326" y="93" text-anchor="middle" class="flow-text">Pod #2</text><text x="326" y="112" text-anchor="middle" class="flow-sub">Nginx :80</text>
+  <rect x="626" y="65" width="185" height="80" rx="11" fill="#fff" stroke="#91bd9e"/><text x="718" y="93" text-anchor="middle" class="flow-text">Pod #1</text><text x="718" y="112" text-anchor="middle" class="flow-sub">.NET API :8080</text>
+  <path d="M151 145 V170 H238 M326 145 V170 H238" stroke="#769bbf" fill="none" stroke-width="2"/><path d="M718 145 V170" stroke="#7caa8e" fill="none" stroke-width="2"/>
+  <rect x="150" y="170" width="176" height="61" rx="10" fill="#d5e7fa" stroke="#80a8d1"/><text x="238" y="195" text-anchor="middle" class="flow-text">frontend Service</text><text x="238" y="212" text-anchor="middle" class="flow-sub">port 80 → Pod :80</text>
+  <rect x="629" y="170" width="178" height="61" rx="10" fill="#d9efdf" stroke="#8ebca0"/><text x="718" y="195" text-anchor="middle" class="flow-text">api Service</text><text x="718" y="212" text-anchor="middle" class="flow-sub">8080 → Pod :8080</text>
+  <path class="flow-arrow" d="M326 199 H629"/><rect x="406" y="181" width="140" height="25" rx="7" fill="#fff" stroke="#d7e1e9"/><text x="476" y="197" text-anchor="middle" font-size="11" font-weight="750" fill="#4f6c82">Nginx /api → api</text>
+ </svg><p class="hint">The lab deliberately uses one API replica because its task data lives in memory. Two API replicas would have inconsistent task lists. A real application should use a shared database.</p></div>
+ <div class="three"><div class="mini"><span class="mini-badge">DESIRED STATE</span><h3>Deployment</h3><p>Asks for replicas and specifies which container image/version to run. Supports updates and rollback history.</p></div><div class="mini"><span class="mini-badge orange">EXECUTION</span><h3>Pod</h3><p>Hosts a running application container. Pods can be replaced and receive new IP addresses.</p></div><div class="mini"><span class="mini-badge green">DISCOVERY</span><h3>Service</h3><p>Gives the Pods a stable network address and routes requests to Pods that are ready.</p></div></div>
+ <div class="stage"><div class="stagehead"><div><h3>Create a local cluster, load your images, deploy</h3><p>Install <a href="https://kind.sigs.k8s.io/docs/user/quick-start/" target="_blank" rel="noopener">kind</a> and <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/" target="_blank" rel="noopener">kubectl</a> in Ubuntu first.</p></div><div class="stepnum">4</div></div><div class="stage-main">
+ <div class="cmd"><div class="cmdtop"><span>UBUNTU · project root</span><button class="copy" data-copy>Copy</button></div><pre><code># Rebuild if needed; images are stored in Docker
+# Stop Compose if it still holds port 8080
+docker compose build
+docker compose down
+
+kind create cluster --name interview-lab --wait 120s
+kind load docker-image interview-api:v1 interview-frontend:v1 --name interview-lab
+
+kubectl apply -f k8s/
+kubectl rollout status deployment/api --timeout=180s
+kubectl rollout status deployment/frontend --timeout=180s
+kubectl get deployments,pods,services</code></pre></div>
+ <div class="callout"><strong>Why <code>kind load</code>?</strong> The Docker images on your laptop aren't automatically available inside the kind cluster's node. Loading them makes them available without publishing to a registry.</div>
+ <div class="cmd"><div class="cmdtop"><span>UBUNTU · terminal stays open</span><button class="copy" data-copy>Copy</button></div><pre><code>kubectl port-forward service/frontend 8080:80</code></pre></div>
+ <div class="success">✓ <span><strong>Expected:</strong> Open <b>http://localhost:8080</b> and use the same app, now managed by Kubernetes. Keep <code>port-forward</code> running in its terminal.</span></div>
+ </div></div>
+ <div class="card"><h3>What the YAML really means</h3><table class="small-table"><thead><tr><th>YAML property</th><th>Plain-English meaning</th></tr></thead><tbody><tr><td><code>kind: Deployment</code></td><td>Manage and replace Pods to match desired state.</td></tr><tr><td><code>replicas: 2</code></td><td>Keep two frontend Pods running, when possible.</td></tr><tr><td><code>image: interview-frontend:v1</code></td><td>Which package each Pod should run.</td></tr><tr><td><code>selector: app: frontend</code></td><td>How the Service finds the right Pods.</td></tr><tr><td><code>readinessProbe</code></td><td>Only send normal Service traffic after the Pod is ready.</td></tr><tr><td><code>livenessProbe</code></td><td>Restart an unhealthy container if liveness checks keep failing.</td></tr></tbody></table></div>
+</section>
+<section id="release" class="section"><div class="eyebrow">08 / Hands-on stage 5</div><h2>Release version 2, then roll back</h2><p class="lede">This is a particularly valuable interview demonstration. An image tag is a version of your deployed package; Kubernetes can roll from one version to another.</p>
+ <div class="timeline"><div><b>Edit a visible string in <code>api/Program.cs</code></b><p>Change one of the three initially seeded tasks so the new API response is obvious.</p></div><div><b>Build a new API image</b><p>Give it <code>v2</code>, not <code>v1</code>. Different tags make releases explicit.</p></div><div><b>Load that image into kind</b><p>The Kubernetes node must have access to the new image.</p></div><div><b>Update the Deployment and watch</b><p>Kubernetes creates the replacement Pod and performs the rollout.</p></div><div><b>Undo if something goes wrong</b><p>Rolling back restores the previous image configuration.</p></div></div>
+ <div class="cmd"><div class="cmdtop"><span>UBUNTU · project root</span><button class="copy" data-copy>Copy</button></div><pre><code>docker build -t interview-api:v2 ./api
+kind load docker-image interview-api:v2 --name interview-lab
+kubectl set image deployment/api api=interview-api:v2
+kubectl rollout status deployment/api
+kubectl rollout history deployment/api
+
+# Revert the deployment image to the previous revision
+kubectl rollout undo deployment/api
+kubectl rollout status deployment/api</code></pre></div>
+ <div class="callout warn"><strong>Demo limitation:</strong> This API stores tasks in process memory. Deploying or rolling back restarts the process and resets that data. Also, with one API replica, availability during a rollout is not guaranteed. Production systems use persistent shared storage and appropriate rollout strategies.</div>
+ <div class="two"><div class="mini"><h3>How to inspect after a rollout</h3><div class="cmd"><div class="cmdtop"><span>kubectl</span><button class="copy" data-copy>Copy</button></div><pre><code>kubectl get pods -o wide
+kubectl describe deployment/api
+kubectl logs deployment/api</code></pre></div></div><div class="mini"><h3>Try changing replica count</h3><div class="cmd"><div class="cmdtop"><span>kubectl</span><button class="copy" data-copy>Copy</button></div><pre><code>kubectl scale deployment/frontend --replicas=3
+kubectl get pods -l app=frontend</code></pre></div><p class="hint">Scaling the <b>frontend</b> is safe in this lab; don't scale the in-memory API.</p></div></div>
+</section>
+<section id="cicd" class="section"><div class="eyebrow">09 / Optional team workflow</div><h2>How a real CI/CD pipeline differs from the local lab</h2><p class="lede">Teams usually don't manually build on developers' machines and load images into kind. A CI service builds and checks packages, publishes them to a registry, then a separate deployment stage updates a shared cluster.</p>
+ <div class="route-switch" role="tablist" aria-label="Choose a deployment route"><button class="active" type="button" data-route="local" aria-selected="true">Local learning route</button><button type="button" data-route="team" aria-selected="false">Real CI/CD route</button></div>
+ <div class="route-panel" id="route-local"><div class="diagram"><h3>One machine. No registry required.</h3><svg viewBox="0 0 910 143" role="img" aria-label="Source files on laptop are built by Docker and loaded into kind which runs Kubernetes Pods" xmlns="http://www.w3.org/2000/svg"><rect class="flow-node" x="13" y="38" width="184" height="67" rx="10"/><text x="105" y="65" text-anchor="middle" class="flow-text">Your source</text><text x="105" y="83" text-anchor="middle" class="flow-sub">Laptop / Ubuntu</text><path class="flow-arrow" d="M197 72 H244"/><rect class="flow-node-build" x="244" y="38" width="185" height="67" rx="10"/><text x="336" y="65" text-anchor="middle" class="flow-text">docker build</text><text x="336" y="83" text-anchor="middle" class="flow-sub">Two images</text><path class="flow-arrow" d="M429 72 H475"/><rect class="flow-node-build" x="475" y="38" width="186" height="67" rx="10"/><text x="568" y="65" text-anchor="middle" class="flow-text">kind load</text><text x="568" y="83" text-anchor="middle" class="flow-sub">Copy into node</text><path class="flow-arrow" d="M661 72 H705"/><rect class="flow-node-run" x="705" y="38" width="188" height="67" rx="10"/><text x="799" y="65" text-anchor="middle" class="flow-text">kubectl apply</text><text x="799" y="83" text-anchor="middle" class="flow-sub">Pods & Services</text></svg></div><div class="callout good"><strong>Use this route first.</strong> It is free, repeatable, and matches every command in the sample project.</div></div>
+ <div class="route-panel" id="route-team" hidden><div class="diagram"><h3>GitHub Actions + registry + shared Kubernetes cluster</h3><svg viewBox="0 0 930 174" role="img" aria-label="Git push triggers GitHub Actions to build and test, publish to GHCR and deploy tagged image to Kubernetes cluster" xmlns="http://www.w3.org/2000/svg"><rect class="flow-node" x="11" y="40" width="177" height="83" rx="11"/><text x="99" y="70" class="flow-text" text-anchor="middle">Git push</text><text x="99" y="91" class="flow-sub" text-anchor="middle">Commit to main</text><path class="flow-arrow" d="M188 82 H229"/><rect class="flow-node" x="229" y="40" width="186" height="83" rx="11"/><text x="322" y="69" class="flow-text" text-anchor="middle">CI runner</text><text x="322" y="90" class="flow-sub" text-anchor="middle">Build; tests when added</text><path class="flow-arrow" d="M415 82 H459"/><rect class="flow-node-build" x="459" y="40" width="184" height="83" rx="11"/><text x="551" y="69" class="flow-text" text-anchor="middle">GHCR registry</text><text x="551" y="90" class="flow-sub" text-anchor="middle">Image: commit SHA</text><path class="flow-arrow" d="M643 82 H687"/><rect class="flow-node-run" x="687" y="40" width="230" height="83" rx="11"/><text x="802" y="68" class="flow-text" text-anchor="middle">Kubernetes</text><text x="802" y="90" class="flow-sub" text-anchor="middle">Explicit deploy stage</text><text x="802" y="106" class="flow-sub" text-anchor="middle">Pull and roll out</text><text x="464" y="151" fill="#8b652e" font-size="11">This lab's sample workflow publishes images, but does NOT execute the final deploy stage.</text></svg></div>
+ <div class="timeline"><div><b>1. Developer pushes code to GitHub</b><p>Git provides traceability and a commit SHA that identifies exactly what changed.</p></div><div><b>2. CI runner builds and verifies</b><p>GitHub Actions executes Docker builds, which run <code>dotnet publish</code> and <code>ng build</code>. Add separate <code>dotnet test</code> / frontend tests before calling the pipeline fully tested.</p></div><div><b>3. Publish versioned images to GHCR</b><p>Example: <code>ghcr.io/OWNER/interview-api:COMMIT_SHA</code>. The cluster needs access to images and any required credentials.</p></div><div><b>4. Deploy exact versions</b><p>A deployment tool (GitOps, Helm, kubectl, or an orchestrated CI job) updates image tags, waits for readiness, and supports rollback.</p></div></div>
+ <div class="callout warn"><strong>Security note:</strong> Never commit cluster kubeconfig files, passwords, or registry tokens. A real deployment stage needs a controlled authentication method, plus HTTPS, ingress, persistent database, and application secrets.</div></div>
+ <div class="card"><h3>The example GitHub Actions file included with this guide</h3><p><code>.github/workflows/container-publish.yml</code> builds the two Docker images on pushes to <code>main</code> and publishes them to GitHub Container Registry using the GitHub-provided token. This is an <b>optional demonstration</b> and doesn't automatically update your Kubernetes cluster.</p>
+ <div class="cmd"><div class="cmdtop"><span>Example production image update · requires an accessible cluster and image permissions</span><button class="copy" data-copy>Copy</button></div><pre><code>kubectl set image deployment/api api=ghcr.io/OWNER/interview-api:COMMIT_SHA
+kubectl set image deployment/frontend frontend=ghcr.io/OWNER/interview-frontend:COMMIT_SHA
+kubectl rollout status deployment/api
+kubectl rollout status deployment/frontend</code></pre></div><p class="hint">Replace OWNER and COMMIT_SHA with real values. This is not a command to run against the default kind lab unless that cluster can pull the registry images.</p></div>
+</section>
+<section id="debug" class="section"><div class="eyebrow">10 / Operating the app</div><h2>Troubleshooting, from the browser backward</h2><p class="lede">Learn to follow the request path and ask which hop failed. It's more effective than randomly restarting services.</p>
+ <div class="trouble"><div class="symptom">Angular page doesn't open</div><div class="diagnosis">Check <code>docker compose ps</code>, <code>docker compose logs frontend</code>, or <code>kubectl get pods -l app=frontend</code>. Make sure <code>port-forward</code> is still running.</div>
+ <div class="symptom">Page opens, but API returns 502</div><div class="diagnosis">Nginx cannot reach an upstream. Check API logs, <code>api</code> Service, endpoints, container readiness, and port 8080.</div>
+ <div class="symptom">Pod shows ImagePullBackOff</div><div class="diagnosis">Check the image tag. In kind, run <code>kind load docker-image ... --name interview-lab</code>; for a registry, check credentials and access permissions.</div>
+ <div class="symptom">Pod shows CrashLoopBackOff</div><div class="diagnosis">Container repeatedly crashes. Run <code>kubectl logs deployment/api --previous</code> (when available), then inspect events with <code>kubectl describe pod ...</code>.</div>
+ <div class="symptom">Pod is running, but not Ready</div><div class="diagnosis">Inspect readiness probes and app startup. <code>kubectl describe pod ...</code> shows probe failure events. A running process isn't necessarily ready for traffic.</div>
+ <div class="symptom">Tasks disappear after an update</div><div class="diagnosis">Expected in this demonstration: task data is only held in the .NET process's memory, not a persistent database.</div></div>
+ <div class="cmd"><div class="cmdtop"><span>UBUNTU · diagnostic commands</span><button class="copy" data-copy>Copy</button></div><pre><code>kubectl get pods -o wide
+kubectl describe deployment/api
+kubectl logs deployment/api --tail=100
+kubectl get service api
+kubectl get endpointslice -l kubernetes.io/service-name=api
+kubectl exec deployment/frontend -- wget -qO- http://api:8080/api/health
+kubectl rollout history deployment/api</code></pre></div>
+ <div class="callout"><strong>My diagnostic sequence:</strong> Browser URL → frontend container → Nginx proxy → <code>api</code> Service → API Pod → health endpoint → API logs. Identify the first failing hop.</div>
+</section>
+<section id="interview" class="section"><div class="eyebrow">11 / Practice and interview readiness</div><h2>Prove the skills instead of just memorizing them</h2><p class="lede">Check off each goal only after you've demonstrated it on your own computer. Progress is stored locally in this browser.</p>
+ <div class="tasks" id="practice-tasks">
+  <div class="task"><label><input type="checkbox" data-task="0"><span><b>I can navigate Ubuntu</b><p>pwd, ls, cd, grep, ps, ss, curl and file paths.</p></span></label></div>
+  <div class="task"><label><input type="checkbox" data-task="1"><span><b>I can explain image vs container</b><p>Describe build-time versus runtime.</p></span></label></div>
+  <div class="task"><label><input type="checkbox" data-task="2"><span><b>I can run Docker Compose</b><p>Build, start, stop, inspect logs and API health.</p></span></label></div>
+  <div class="task"><label><input type="checkbox" data-task="3"><span><b>I can trace a browser request</b><p>Browser → Nginx → API and back.</p></span></label></div>
+  <div class="task"><label><input type="checkbox" data-task="4"><span><b>I can deploy to kind</b><p>Load images, apply YAML and port-forward.</p></span></label></div>
+  <div class="task"><label><input type="checkbox" data-task="5"><span><b>I can explain Deployment vs Pod vs Service</b><p>Explain labels, selectors, replicas and probes.</p></span></label></div>
+  <div class="task"><label><input type="checkbox" data-task="6"><span><b>I can release and roll back v2</b><p>Build a new tag, update Deployment, undo.</p></span></label></div>
+  <div class="task"><label><input type="checkbox" data-task="7"><span><b>I can debug a broken API route</b><p>Find and explain a 502 or failed Pod.</p></span></label></div>
+ </div>
+ <div class="progress-shell" style="height:11px"><div class="progress-fill" id="progress-bottom"></div></div><p class="hint" id="progress-bottom-text">0 / 8 completed</p>
+ <div class="card"><h3>Five interview questions you should answer aloud</h3>
+  <details><summary>1. Why would you use Docker for a .NET application?</summary><p>To package the application with the correct runtime dependencies and startup configuration in a reproducible image. This reduces environment inconsistencies and allows the same image to be tested and deployed across environments. It doesn't replace automated testing, security, or configuration management.</p></details>
+  <details><summary>2. Why is Nginx used for Angular instead of Node.js?</summary><p>The production Angular build emits static assets. Nginx serves them efficiently and reverse-proxies <code>/api</code> to ASP.NET. Node.js is a build tool here, not a runtime requirement for the compiled SPA.</p></details>
+  <details><summary>3. What does Kubernetes do when an API Pod crashes?</summary><p>The kubelet can restart the container within the Pod according to restart policy; a Deployment's ReplicaSet also maintains the desired number of Pods. Liveness probes can trigger a restart. Kubernetes does not automatically fix underlying application bugs.</p></details>
+  <details><summary>4. How would you perform a safe update?</summary><p>Build a uniquely tagged image, test it, make it available to the cluster, update the Deployment to that image, watch rollout readiness, monitor errors, and roll back to a previous revision if required. For real services, add tests, health probes, persistent data, and an appropriate rollout strategy.</p></details>
+  <details><summary>5. What's the difference between CI and CD?</summary><p>CI automatically checks and builds changes. CD can mean Continuous Delivery (a deployable artifact is prepared, with release potentially requiring approval) or Continuous Deployment (releases go automatically to production). A workflow that only pushes images to a registry is not a complete deployment pipeline.</p></details>
+ </div>
+ <div class="two"><div class="mini"><h3>Next project extension</h3><p>Add PostgreSQL, an EF Core migration, volume-backed data for local Compose, tests, image scanning, and an HTTP ingress to learn production concerns.</p></div><div class="mini"><h3>Clean up when finished</h3><div class="cmd"><div class="cmdtop"><span>UBUNTU</span><button class="copy" data-copy>Copy</button></div><pre><code>docker compose down
+kind delete cluster --name interview-lab</code></pre></div></div></div>
+</section>
+<footer class="foot"><b>Keep learning from the official docs:</b><div class="toplinks"><a href="https://docs.docker.com/compose/gettingstarted/" target="_blank" rel="noopener">Docker Compose ↗</a><a href="https://kind.sigs.k8s.io/docs/user/quick-start/" target="_blank" rel="noopener">kind ↗</a><a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/" target="_blank" rel="noopener">Kubernetes Deployments ↗</a><a href="https://docs.docker.com/desktop/features/wsl/" target="_blank" rel="noopener">Docker + WSL ↗</a><a href="https://docs.github.com/en/actions" target="_blank" rel="noopener">GitHub Actions ↗</a></div><p style="margin-top:18px">This is a local training environment, not an internet-facing production deployment. No persistent database, authentication, ingress, HTTPS, external secrets, or automated tests are configured in the application sample.</p></footer>
+</main></div>
+<script>
+(function(){
+ const copied=new WeakSet();
+ document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',async function(){
+  const pre=b.closest('.cmd').querySelector('pre');const value=pre.innerText;
+  try{await navigator.clipboard.writeText(value);b.textContent='Copied ✓';setTimeout(()=>b.textContent='Copy',1400)}
+  catch(e){const sel=window.getSelection();const r=document.createRange();r.selectNodeContents(pre);sel.removeAllRanges();sel.addRange(r);b.textContent='Select text';setTimeout(()=>b.textContent='Copy',1500)}
+ });});
+ const buttons=[...document.querySelectorAll('[data-route]')];buttons.forEach(function(b){b.addEventListener('click',function(){const route=b.dataset.route;buttons.forEach(x=>{let selected=x===b;x.classList.toggle('active',selected);x.setAttribute('aria-selected',String(selected));});document.querySelectorAll('.route-panel').forEach(p=>p.hidden=p.id!=='route-'+route);});});
+ const checkboxes=[...document.querySelectorAll('[data-task]')];function load(){try{return JSON.parse(localStorage.getItem('ship-it-progress-v1')||'{}')}catch(e){return {}}}const state=load();function update(){const n=checkboxes.filter(x=>x.checked).length;document.querySelectorAll('.progress-fill').forEach(p=>p.style.width=(100*n/checkboxes.length)+'%');document.getElementById('progress-text').textContent=n+' of '+checkboxes.length+' practice goals complete';document.getElementById('progress-bottom-text').textContent=n+' / '+checkboxes.length+' completed';try{localStorage.setItem('ship-it-progress-v1',JSON.stringify(Object.fromEntries(checkboxes.map(x=>[x.dataset.task,x.checked]))))}catch(e){}}
+ checkboxes.forEach(x=>{x.checked=!!state[x.dataset.task];x.addEventListener('change',update)});update();
+ const nav=[...document.querySelectorAll('.aside .nav')];if('IntersectionObserver'in window){const io=new IntersectionObserver(entries=>{for(const e of entries)if(e.isIntersecting){nav.forEach(n=>n.classList.toggle('active',n.getAttribute('href')==='#'+e.target.id));}},{rootMargin:'-5% 0px -80% 0px'});document.querySelectorAll('main section[id]').forEach(s=>io.observe(s));}
+})();
+</script>
+</body>
+</html>
