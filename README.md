@@ -319,15 +319,6 @@ Open **http://localhost:4200**. The Angular dev server proxies `/api` to `http:/
 | Changes don't appear | Rebuild image and recreate container; for K8s use a new image tag and rollout |
 | Tasks disappear | Expected: backend stores tasks in RAM only |
 
-## 8. Four interview-ready things to say
-
-1. **What is an image vs container?** An image is an immutable packaged filesystem/configuration template; a container is a running instance of it.
-2. **Docker vs Kubernetes?** Docker builds/runs containers; Kubernetes schedules and manages containerized workloads across nodes, including desired replicas, service discovery, and restart/rollout behavior.
-3. **What is a Pod vs Deployment vs Service?** A Pod is the smallest deployable workload unit, a Deployment manages replicated Pods, and a Service provides a stable endpoint for a group of Pods.
-4. **How would you troubleshoot a 502?** Check browser/network path, reverse-proxy logs, upstream API health and logs, container/pod state, service selectors, endpoints, and ports in order.
-
-See `INTERVIEW_PREP.md` for more questions and `EXERCISES.md` for progressive practice tasks.
-
 ## Official references
 
 - .NET support: https://dotnet.microsoft.com/platform/support/policy
